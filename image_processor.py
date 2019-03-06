@@ -34,7 +34,7 @@ def download_raw_images(number):
                 urllib.request.urlretrieve(url, filename)
                 i += 1
         except urllib.error.HTTPError:
-            pass
+            continue
         if i > number:
             break
 
