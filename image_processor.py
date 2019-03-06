@@ -145,6 +145,8 @@ if __name__ == "__main__":
         with open('fall11_urls.txt', 'wb') as f_out:
             shutil.copyfileobj(f_in, f_out)
 
+    random.seed(360)
+
     download_raw_images(5000)
     print("Download finished: " + datetime.datetime.now().strftime("%H:%M:%S"))
     print("Processing")
@@ -168,5 +170,5 @@ if __name__ == "__main__":
                                 random_position=False)
     watermark_with_transparency("./resized_images/wide", "./watermarked_image/diffPos", "./watermarks",
                                 random_position=True)
-    print("Finished: "+ datetime.datetime.now().strftime("%H:%M:%S"))
+    print("Finished: " + datetime.datetime.now().strftime("%H:%M:%S"))
 
