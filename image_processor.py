@@ -51,14 +51,17 @@ def resize(path="./raw_images/"):
     os.chdir(path)
     files = os.listdir('.')
     for file in files:
-        im = Image.open(file)
-        width, height = im.size
-        if width > height >= 300 and width >= 500:
-            crop = im.crop((0, 0, 500, 300))
-            crop.save(widepath+"/"+file)
-        elif width >= 300 and height >= 500:
-            crop = im.crop((0, 0, 300, 500))
-            crop.save(tallpath + "/" + file)
+        try:
+            im = Image.open(file)
+            width, height = im.size
+            if width > height >= 300 and width >= 500:
+                crop = im.crop((0, 0, 500, 300))
+                crop.save(widepath + "/" + file)
+            elif width >= 300 and height >= 500:
+                crop = im.crop((0, 0, 300, 500))
+                crop.save(tallpath + "/" + file)
+        except PermissionError:
+            continue
     os.chdir(owd)
 
 
