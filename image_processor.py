@@ -1,6 +1,11 @@
-import urllib.request, urllib.error
-import random, os
+import urllib.request
+import urllib.error
 from PIL import Image, ImageDraw, ImageFont
+import random
+import os
+import gzip
+import shutil
+import datetime
 
 
 def file_read(fname, nlines):
@@ -15,9 +20,10 @@ def file_read(fname, nlines):
 
 
 def download_raw_images(number):
+    os.mkdir("raw_images")
     urls = file_read('fall11_urls.txt', min(10*number, 10000000))
     random.shuffle(urls)
-    urls = urls[:number]
+    urls = urls[:2*number]
     i = 1
     for url in urls:
         try:
@@ -29,11 +35,14 @@ def download_raw_images(number):
                 i += 1
         except urllib.error.HTTPError:
             pass
+        if i > number:
+            break
 
 
-def resize(path, newpath):
+def resize(path="./raw_images/"):
     owd = os.getcwd()
-    os.chdir(newpath)
+    os.mkdir("resized_images")
+    os.chdir("./resized_images")
     widepath = os.getcwd()+"/wide"
     tallpath = os.getcwd()+"/tall"
     os.chdir(owd)
@@ -64,7 +73,7 @@ def watermark_text(input_path, output_path, texts=None, random_pos=False):
         out = os.getcwd()+"/"+str(i)
         os.chdir(input_path)
 
-        pos = (random.randint(0, 400), random.randint(0, 250))
+        pos = (random.randint(0, 350), random.randint(0, 250))
         font = ImageFont.truetype("arial.ttf", random.randint(20, 40))
         colour = (240, 240, 240, random.randint(100, 200))
         for file in files:
@@ -127,6 +136,37 @@ def watermark_with_transparency(input_path, output_path, watermark_path, random_
 
 
 if __name__ == "__main__":
-    # scale_watermarks("./watermarks")
-    watermark_with_transparency("./resized_images/wide", "./watermarked_image/diffPos", "./watermarks", random_position=True)
+    print("started: " + datetime.datetime.now().strftime("%H:%M:%S"))
+    print("Downloading images")
+    urllib.request.urlretrieve("http://image-net.org/imagenet_data/urls/imagenet_fall11_urls.tgz",
+                               "imagenet_fall11_urls.tgz")
+
+    with gzip.open('imagenet_fall11_urls.tgz', 'rb') as f_in:
+        with open('fall11_urls.txt', 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+
+    download_raw_images(5000)
+    print("Download finished: " + datetime.datetime.now().strftime("%H:%M:%S"))
+    print("Processing")
+    resize()
+    wd = os.getcwd()
+    os.mkdir("watermarked_text")
+    os.chdir("./watermarked_text")
+    os.mkdir("samePos")
+    os.mkdir("diffPos")
+    os.chdir(wd)
+
+    os.mkdir("watermarked_image")
+    os.chdir("./watermarked_image")
+    os.mkdir("samePos")
+    os.mkdir("diffPos")
+    os.chdir(wd)
+
+    watermark_text("./resized_images/wide", "./watermarked_text/samePos")
+    watermark_text("./resized_images/wide", "./watermarked_text/diffPos", random_pos=True)
+    watermark_with_transparency("./resized_images/wide", "./watermarked_image/samePos", "./watermarks",
+                                random_position=False)
+    watermark_with_transparency("./resized_images/wide", "./watermarked_image/diffPos", "./watermarks",
+                                random_position=True)
+    print("Finished: "+ datetime.datetime.now().strftime("%H:%M:%S"))
 
