@@ -95,30 +95,38 @@ def watermark_with_transparency(input_path, output_path, watermark_path, random_
     files = os.listdir('.')
 
     for i, watermark_path in enumerate(watermarks, 1):
-        watermark = Image.open(watermark_path)
+        watermark = Image.open(watermark_path).convert("RGBA")
         width, height = watermark.size
-        ratio = width/100
-        size = (width*ratio, height*ratio)
-        watermark.thumbnail(size, Image.ANTIALIAS)
+        ratio = 100 / width
+        size = (int(width*ratio), int(height*ratio))
+        print(size)
+        watermark = watermark.resize(size)
+        watermask = watermark.convert("L").point(lambda x: min(x, random.randint(100, 200)))
+        watermark.putalpha(watermask)
 
         os.chdir(output_path)
         os.mkdir(str(i))
         out = os.getcwd() + "/" + str(i)
         os.chdir(input_path)
-        pos = (random.randint(0, 400), random.randint(0, 250))
+        pos = (random.randint(0, 400), random.randint(0, 200))
 
         for file in files:
             base_image = Image.open(file).convert("RGBA")
-
             width, height = base_image.size
 
-            transparent = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+            if random_position:
+                pos = (random.randint(0, 400), random.randint(0, 200))
+
+            transparent = Image.new('RGBA', (width, height), (255, 255, 255, 128))
             transparent.paste(base_image, (0, 0))
-            transparent.paste(watermark, position, mask=watermark)
-            transparent.show()
-            transparent.save(output_image_path)
+            transparent.paste(watermark, pos, mask=watermark)
+            # transparent.show()
+            file = file.replace(".jpg", ".png")
+            # print(file)
+            transparent.save(out + "/" + file)
 
 
 if __name__ == "__main__":
-
+    # scale_watermarks("./watermarks")
+    watermark_with_transparency("./resized_images/wide", "./watermarked_image/diffPos", "./watermarks", random_position=True)
 
