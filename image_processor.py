@@ -59,6 +59,7 @@ def resize(path="./raw_images/"):
         elif width >= 300 and height >= 500:
             crop = im.crop((0, 0, 300, 500))
             crop.save(tallpath + "/" + file)
+    os.chdir(owd)
 
 
 def watermark_text(input_path, output_path, texts=None, random_pos=False):
