@@ -43,6 +43,8 @@ def resize(path="./raw_images/"):
     owd = os.getcwd()
     os.mkdir("resized_images")
     os.chdir("./resized_images")
+    os.mkdir("wide")
+    os.mkdir("tall")
     widepath = os.getcwd()+"/wide"
     tallpath = os.getcwd()+"/tall"
     os.chdir(owd)
