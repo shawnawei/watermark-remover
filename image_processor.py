@@ -117,7 +117,7 @@ def watermark_with_transparency(input_path, output_path, watermark_path, random_
         width, height = watermark.size
         ratio = 100 / width
         size = (int(width*ratio), int(height*ratio))
-        print(size)
+        # print(size)
         watermark = watermark.resize(size)
         watermask = watermark.convert("L").point(lambda x: min(x, random.randint(100, 200)))
         watermark.putalpha(watermask)
