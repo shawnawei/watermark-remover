@@ -34,6 +34,8 @@ def download_raw_images(number):
                 urllib.request.urlretrieve(url, filename)
                 i += 1
         except urllib.error.HTTPError:
+            print(str(i))
+            print(url)
             continue
         if i > number:
             break
@@ -144,14 +146,14 @@ def watermark_with_transparency(input_path, output_path, watermark_path, random_
 if __name__ == "__main__":
     print("started: " + datetime.datetime.now().strftime("%H:%M:%S"))
     print("Downloading images")
-    urllib.request.urlretrieve("http://image-net.org/imagenet_data/urls/imagenet_fall11_urls.tgz",
-                               "imagenet_fall11_urls.tgz")
+    # urllib.request.urlretrieve("http://image-net.org/imagenet_data/urls/imagenet_fall11_urls.tgz",
+    #                            "imagenet_fall11_urls.tgz")
+    #
+    # with gzip.open('imagenet_fall11_urls.tgz', 'rb') as f_in:
+    #     with open('fall11_urls.txt', 'wb') as f_out:
+    #         shutil.copyfileobj(f_in, f_out)
 
-    with gzip.open('imagenet_fall11_urls.tgz', 'rb') as f_in:
-        with open('fall11_urls.txt', 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
-
-    random.seed(360)
+    random.seed(123)
 
     download_raw_images(2500)
     print("Download finished: " + datetime.datetime.now().strftime("%H:%M:%S"))
