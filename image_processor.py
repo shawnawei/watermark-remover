@@ -153,7 +153,7 @@ if __name__ == "__main__":
 
     random.seed(360)
 
-    download_raw_images(5000)
+    download_raw_images(2500)
     print("Download finished: " + datetime.datetime.now().strftime("%H:%M:%S"))
     print("Processing")
     resize()
