@@ -99,6 +99,7 @@ def watermark_text(input_path, output_path, texts=None, random_pos=False):
             file = file.replace(".jpg", ".png")
             # print(file)
             combined.save(out + "/" + file)
+    os.chdir(owd)
 
 
 def watermark_with_transparency(input_path, output_path, watermark_path, random_position=False):
@@ -141,17 +142,18 @@ def watermark_with_transparency(input_path, output_path, watermark_path, random_
             file = file.replace(".jpg", ".png")
             # print(file)
             transparent.save(out + "/" + file)
+    os.chdir(owd)
 
 
 if __name__ == "__main__":
     print("started: " + datetime.datetime.now().strftime("%H:%M:%S"))
     print("Downloading images")
-    # urllib.request.urlretrieve("http://image-net.org/imagenet_data/urls/imagenet_fall11_urls.tgz",
-    #                            "imagenet_fall11_urls.tgz")
-    #
-    # with gzip.open('imagenet_fall11_urls.tgz', 'rb') as f_in:
-    #     with open('fall11_urls.txt', 'wb') as f_out:
-    #         shutil.copyfileobj(f_in, f_out)
+    urllib.request.urlretrieve("http://image-net.org/imagenet_data/urls/imagenet_fall11_urls.tgz",
+                               "imagenet_fall11_urls.tgz")
+
+    with gzip.open('imagenet_fall11_urls.tgz', 'rb') as f_in:
+        with open('fall11_urls.txt', 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
 
     random.seed(123)
 
