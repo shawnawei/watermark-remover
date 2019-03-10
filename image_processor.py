@@ -174,8 +174,8 @@ if __name__ == "__main__":
     os.mkdir("diffPos")
     os.chdir(wd)
 
-    watermark_text("./resized_images/wide", "./watermarked_text/samePos")
-    watermark_text("./resized_images/wide", "./watermarked_text/diffPos", random_pos=True)
+    watermark_text("/resized_images/wide", "/watermarked_text/samePos")
+    watermark_text("/resized_images/wide", "/watermarked_text/diffPos", random_pos=True)
     watermark_with_transparency("./resized_images/wide", "./watermarked_image/samePos", "./watermarks",
                                 random_position=False)
     watermark_with_transparency("./resized_images/wide", "./watermarked_image/diffPos", "./watermarks",
