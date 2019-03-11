@@ -180,9 +180,9 @@ if __name__ == "__main__":
 
     watermark_text("/resized_images/wide", "/watermarked_text/samePos")
     watermark_text("/resized_images/wide", "/watermarked_text/diffPos", random_pos=True)
-    watermark_with_transparency("./resized_images/wide", "./watermarked_image/samePos", "./watermarks",
+    watermark_with_transparency("/resized_images/wide", "/watermarked_image/samePos", "/watermarks",
                                 random_position=False)
-    watermark_with_transparency("./resized_images/wide", "./watermarked_image/diffPos", "./watermarks",
+    watermark_with_transparency("/resized_images/wide", "/watermarked_image/diffPos", "/watermarks",
                                 random_position=True)
     print("Finished: " + datetime.datetime.now().strftime("%H:%M:%S"))
 
