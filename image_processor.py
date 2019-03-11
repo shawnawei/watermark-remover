@@ -6,6 +6,7 @@ import os
 import gzip
 import shutil
 import datetime
+import platform
 
 
 def file_read(fname, nlines):
@@ -82,7 +83,10 @@ def watermark_text(input_path, output_path, texts=None, random_pos=False):
         os.chdir(input_path)
 
         pos = (random.randint(0, 350), random.randint(0, 250))
-        font = ImageFont.truetype("./OpenSans-Regular.ttf", random.randint(20, 40))
+        if platform.system() == 'Windows':
+        	font = ImageFont.truetype("arial.ttf", random.randint(20, 40))
+    	else:
+    		font = ImageFont.truetype("~/System/Library/Fonts/SFNSText.ttf", random.randint(20, 40))
         colour = (240, 240, 240, random.randint(100, 200))
         for file in files:
             im = Image.open(file).convert("RGBA")
